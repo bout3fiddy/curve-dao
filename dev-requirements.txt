@@ -1,0 +1,4 @@
+IPython
+pre-commit
+pytest
+git+https://github.com/vyperlang/titanoboa.git

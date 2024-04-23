@@ -1,0 +1,43 @@
+[project]
+name = "curve_dao_test"
+version = "0.0.1"
+description = "DAO tooling for CurveDAO"
+license = { file = "LICENSE" }
+readme = "README.md"
+
+keywords = [
+    "ethereum",
+    "evm",
+    "smart contract",
+    "governance",
+    "defi",
+    "open finance",
+    "decentralised finance",
+    "finance",
+    "dao",
+    "curve finance",
+]
+
+classifiers = ["Topic :: Software Development"]
+
+# Requirements
+dependencies = [
+    "titanoboa@git+https://github.com/vyperlang/titanoboa",
+    "black",
+    "pytest",
+    "requests",
+    "rich",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.setuptools.packages.find]
+include = ["curve_dao*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
