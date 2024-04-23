@@ -1,5 +1,5 @@
 [project]
-name = "curve_dao_test"
+name = "curve_dao"
 version = "0.0.1"
 description = "DAO tooling for CurveDAO"
 license = { file = "LICENSE" }
