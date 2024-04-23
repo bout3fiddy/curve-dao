@@ -1,4 +1,16 @@
+import logging
+
 import requests
+from rich.logging import RichHandler
+
+logging.basicConfig(
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+
+logger = logging.getLogger("rich")
 
 
 def pin_to_ipfs(description: str, pinata_token: str):
@@ -18,10 +30,15 @@ def pin_to_ipfs(description: str, pinata_token: str):
         "pinataMetadata": {"name": "pinnie.json"},
         "pinataOptions": {"cidVersion": 1},
     }
+
     response = requests.request("POST", url, json=payload, headers=headers)
 
-    assert (
-        200 <= response.status_code < 400
-    ), f"POST to IPFS failed: {response.status_code}"
+    try:
+        assert 200 <= response.status_code < 400
+        ipfs_hash = response.json()["IpfsHash"]
+        logger.info(f"Pinned Vote description to ipfs:{ipfs_hash}")
+        return ipfs_hash
 
-    return response.json()["IpfsHash"]
+    except Exception:
+        logger.exception(f"POST to IPFS failed: {response.status_code}")
+        raise

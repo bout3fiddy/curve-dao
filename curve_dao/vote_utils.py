@@ -1,13 +1,21 @@
-import sys
+import logging
 import warnings
 from typing import Dict, List, Tuple
 
 import boa
-from rich.console import Console as RichConsole
+from hexbytes import HexBytes
+from rich.logging import RichHandler
 
 warnings.filterwarnings("ignore")
 
-logger = RichConsole(file=sys.stdout)
+logging.basicConfig(
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+
+logger = logging.getLogger("rich")
 
 
 class MissingVote(Exception):
@@ -27,6 +35,8 @@ def prepare_evm_script(target: Dict, actions: List[Tuple], etherscan_api_key: st
     aragon_agent = boa.from_etherscan(
         target["agent"], name="AragonAgent", api_key=etherscan_api_key
     )
+
+    logger.info("Preparing EVM script")
     evm_script = bytes.fromhex("00000001")
 
     for action in actions:
@@ -46,5 +56,8 @@ def prepare_evm_script(target: Dict, actions: List[Tuple], etherscan_api_key: st
             + length
             + agent_calldata
         )
+
+    evm_script = HexBytes(evm_script)
+    logger.info(f"EVM script generated: {evm_script}")
 
     return evm_script
