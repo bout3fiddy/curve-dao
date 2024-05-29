@@ -1,8 +1,6 @@
-# Curve DAO Operations
+# What is this?
 
-This repository contains tools, written in python, for Curve DAO operations. The goal is to provide a simple command-line interface that allows veCRV holders to create and decode on-chain executable proposals, and simple scripts to produce analytics on governance in the Curve DAO.
-
-Such a CLI tool allows independence from a web-ui: after all, decentralisation goes beyond just network decentralisation: it more or less means democratic access to technology.
+Simple python package to simulate on-chain CurveDAO proposals and publish proposals for DAO voting on-chain.
 
 # Who needs this?
 
@@ -16,6 +14,18 @@ veCRV holders looking to create on-chain proposals such as
 
 Curve DAO stakeholders have the ability to change the protocol in many ways. This repository is an attempt to consolidate all on-chain DAO operations into a single tool.
 
-# Setup
+# How does one install it?
 
-...
+`pip install curve-dao`
+
+# How does one contribute?
+
+1. Pull Requests.
+2. Create issues.
+3. ...
+
+# How does one build and publish?
+
+1. Update codebase
+2. Up version in pyproject.toml
+3. `python -m build; python -m twine upload --repository pypi dist/* --verbose`

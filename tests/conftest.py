@@ -1,7 +1,9 @@
-import boa
-import curve_dao
 import os
+
+import boa
 import pytest
+
+import curve_dao
 
 
 def pytest_sessionstart():
