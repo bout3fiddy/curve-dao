@@ -1,3 +1,5 @@
+import time
+
 import boa
 import pytest
 
@@ -6,6 +8,7 @@ import curve_dao
 
 @pytest.fixture
 def gauge_to_kill(etherscan_api_key):
+    time.sleep(1)  # Etherscan API limit
     return boa.from_etherscan(
         "0x04e80db3f84873e4132b221831af1045d27f140f",
         name="LiquidityGaugeV6",
@@ -25,7 +28,7 @@ def description():
 
 @pytest.fixture
 def target():
-    return curve_dao.addresses.CURVE_DAO_OWNERSHIP
+    return curve_dao.addresses.DAO.OWNERSHIP
 
 
 @pytest.fixture
@@ -36,7 +39,7 @@ def evm_script(target, actions, etherscan_api_key):
 def test_evm_script(evm_script):
     assert (
         evm_script.hex()
-        == "0000000140907540d8a6c65c637785e8f8b742ae6b0b9968000000c4b61d27f600000000000000000000000004e80db3f84873e4132b221831af1045d27f140f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000002490b22997000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000"
+        == "0x0000000140907540d8a6c65c637785e8f8b742ae6b0b9968000000c4b61d27f600000000000000000000000004e80db3f84873e4132b221831af1045d27f140f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000002490b22997000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000"
     )
 
 
@@ -45,6 +48,7 @@ def test_evm_script(evm_script):
 def test_create_vote(
     target, actions, description, etherscan_api_key, pinata_token, vote_creator
 ):
+    time.sleep(1)  # Etherscan API limit
     with boa.env.prank(vote_creator):
         vote_id = curve_dao.create_vote(
             target, actions, description, etherscan_api_key, pinata_token
@@ -56,7 +60,7 @@ def test_create_vote(
 @pytest.fixture
 def test_simulate(test_create_vote, target, etherscan_api_key):
     vote_id = test_create_vote
-    assert curve_dao.simulate(vote_id, target["voting"], etherscan_api_key)
+    assert curve_dao.simulate(vote_id, target, etherscan_api_key)
 
 
 def test_gauge_killed(test_create_vote, test_simulate, gauge_to_kill):

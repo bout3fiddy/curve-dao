@@ -1,10 +1,12 @@
 import logging
 import warnings
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import boa
 from hexbytes import HexBytes
 from rich.logging import RichHandler
+
+from curve_dao.addresses import DAO, get_dao_parameters
 
 warnings.filterwarnings("ignore")
 
@@ -22,7 +24,7 @@ class MissingVote(Exception):
     """Exception raised when a vote ID is invalid."""
 
 
-def prepare_evm_script(target: Dict, actions: List[Tuple], etherscan_api_key: str):
+def prepare_evm_script(dao: str | DAO, actions: List[Tuple], etherscan_api_key: str):
     """Generates EVM script to be executed by AragonDAO contracts.
 
     Args:
@@ -33,7 +35,7 @@ def prepare_evm_script(target: Dict, actions: List[Tuple], etherscan_api_key: st
         str: Generated EVM script.
     """
     aragon_agent = boa.from_etherscan(
-        target["agent"], name="AragonAgent", api_key=etherscan_api_key
+        get_dao_parameters(dao)["agent"], name="AragonAgent", api_key=etherscan_api_key
     )
 
     logger.info("Preparing EVM script")
