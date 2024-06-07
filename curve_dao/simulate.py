@@ -5,7 +5,7 @@ from rich.logging import RichHandler
 from rich.panel import Panel
 from rich.pretty import Pretty
 
-from .addresses import CONVEX_VOTERPROXY
+from .addresses import CONVEX_VOTERPROXY, DAO, get_dao_parameters
 
 logging.basicConfig(
     level="INFO",
@@ -17,11 +17,11 @@ logging.basicConfig(
 logger = logging.getLogger("rich")
 
 
-def simulate(vote_id: int, voting_contract: str, etherscan_api_key: str):
+def simulate(vote_id: int, dao: str | DAO, etherscan_api_key: str):
     logger.info("Simulating Vote")
 
     voting_contract = boa.from_etherscan(
-        voting_contract, "AragonVoting", api_key=etherscan_api_key
+        get_dao_parameters(dao)["voting"], "AragonVoting", api_key=etherscan_api_key
     )
 
     # print vote details to console first:

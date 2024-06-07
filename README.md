@@ -1,3 +1,23 @@
+# Example
+
+```python
+import boa
+import curve_dao
+
+contract = boa.load("contracts/contract.vy",
+    curve_dao.get_address("ownership"), curve_dao.get_address("param"), curve_dao.get_address("emergency"),  # Set admins
+)
+ACTIONS = [
+    ("0xcontract", "set_something", ("values",), 70, "set"),  # 0xcontract.set_something(("values",), 70, "set)
+    (contract, "enact"),  # contract.enact()
+]
+DESCRIPTION = "Enact something"
+vote_id = curve_dao.create_vote("ownership", ACTIONS, DESCRIPTION,
+                                etherscan_api_key=os.environ["ETHERSCAN_API_KEY"], pinata_token=os.environ["PINATA_TOKEN"])
+if is_simulation:  # forked environment
+    curve_dao.simulate(vote_id, "ownership", etherscan_api_key=os.environ["ETHERSCAN_API_KEY"])
+```
+
 # What is this?
 
 Simple python package to simulate on-chain CurveDAO proposals and publish proposals for DAO voting on-chain.
