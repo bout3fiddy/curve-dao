@@ -3,6 +3,8 @@ import warnings
 from typing import Dict, List, Tuple
 
 import boa
+from boa.contracts.abi.abi_contract import ABIContract
+from boa.contracts.vyper.vyper_contract import VyperContract
 from hexbytes import HexBytes
 from rich.logging import RichHandler
 
@@ -41,8 +43,12 @@ def prepare_evm_script(target: Dict, actions: List[Tuple], etherscan_api_key: st
 
     for action in actions:
         address, fn_name, *args = action
-        contract = boa.from_etherscan(
-            address=address, name="TargetContract", api_key=etherscan_api_key
+        contract = (
+            address
+            if isinstance(address, (VyperContract, ABIContract))
+            else boa.from_etherscan(
+                address=address, name="TargetContract", api_key=etherscan_api_key
+            )
         )
         contract_function = getattr(contract, fn_name)
 
