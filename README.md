@@ -40,9 +40,13 @@ Curve DAO stakeholders have the ability to change the protocol in many ways. Thi
 
 # How does one contribute?
 
-1. Pull Requests.
+1. Fork + Pull Requests.
 2. Create issues.
 3. ...
+
+# How does one test?
+
+`python -m pytest .`
 
 # How does one build and publish?
 
