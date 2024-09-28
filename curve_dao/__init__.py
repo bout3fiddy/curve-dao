@@ -30,7 +30,7 @@ def create_vote(
     is_simulation: bool = False,
 ) -> int:
     evm_script = prepare_evm_script(dao, actions, etherscan_api_key)
-    
+
     vote_description_data = description
     if not is_simulation:
         vote_description_data = f"ipfs:{pin_to_ipfs(description, pinata_token)}"
